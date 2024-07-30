@@ -22,15 +22,12 @@ public class JournalEntryController {
 
     @GetMapping()
     public List<JournalEntry> getAll() {
-  //      return new ArrayList<>(journalEntryMap.values());
-
         return journalEntryService.getAll();
     }
 
 
     @PostMapping()
     public boolean createEntry(@RequestBody JournalEntry journalEntry) {
-   //     journalEntryMap.put(journalEntry.getId(), journalEntry);
         journalEntry.setDateTime(LocalDateTime.now());
         journalEntryService.saveJournal(journalEntry);
         return true;
@@ -38,14 +35,25 @@ public class JournalEntryController {
 
     @GetMapping("id/{myId}")
     public Optional<JournalEntry> getJournalEntrybyId(@PathVariable ObjectId myId){
-   //     return journalEntryMap.get(myId);
         return journalEntryService.getbyId(myId);
     }
 
     @DeleteMapping("id/{myId}")
-    public JournalEntry deleteJournalEntrybyId(@PathVariable Long myId){
-   //     return journalEntryMap.remove(myId);
-        return null;
+    public void deleteJournalEntrybyId(@PathVariable ObjectId myId){
+         journalEntryService.deletebyId(myId);
+    }
+
+    @PutMapping("id/{myId}")
+    public JournalEntry updateJournalEntrybyId(@PathVariable ObjectId myId,@RequestBody JournalEntry journalEntry){
+
+        JournalEntry old = journalEntryService.getbyId(myId).orElse(null);
+
+        if(old !=null){
+            old.setName(journalEntry.getName() !=null && !journalEntry.getName().equals("") ? journalEntry.getName() : old.getName());
+            old.setDescription(journalEntry.getDescription() !=null && !journalEntry.getDescription().equals("") ? journalEntry.getDescription() : old.getDescription());
+        }
+        journalEntryService.updatebyId(old);
+        return old;
     }
 
 

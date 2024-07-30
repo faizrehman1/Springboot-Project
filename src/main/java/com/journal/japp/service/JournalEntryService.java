@@ -29,4 +29,12 @@ public class JournalEntryService {
         return journalEntryRepository.findById(objectId);
     }
 
+    public void deletebyId(ObjectId objectId){
+        journalEntryRepository.deleteById(objectId);
+    }
+
+    public void updatebyId(JournalEntry journalEntry){
+        journalEntryRepository.save(journalEntry);
+    }
+
 }
