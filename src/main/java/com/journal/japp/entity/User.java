@@ -25,8 +25,6 @@ public class User {
     private String userName;
     @NonNull
     private String password;
-    @NonNull
-    private LocalDateTime localDateTime;
     @DBRef
     private List<JournalEntry> journalEntries = new ArrayList<>();
 

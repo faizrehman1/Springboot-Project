@@ -2,7 +2,9 @@ package com.journal.japp.controller;
 
 
 import com.journal.japp.entity.JournalEntry;
+import com.journal.japp.entity.User;
 import com.journal.japp.service.JournalEntryService;
+import com.journal.japp.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,18 +24,25 @@ public class JournalEntryController {
     @Autowired
     private JournalEntryService journalEntryService;
 
-    @GetMapping()
-    public List<JournalEntry> getAll() {
-        return journalEntryService.getAll();
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("{userName}")
+    public ResponseEntity<?> getAllJournalEntryOfUser(@PathVariable String userName) {
+        User user = userService.findbyUserName(userName);
+        List<JournalEntry> all = user.getJournalEntries();
+        if (all != null && !all.isEmpty()) {
+            return new ResponseEntity<>(userService.getAll(), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
-    @PostMapping()
-    public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry journalEntry) {
+    @PostMapping("{userName}")
+    public ResponseEntity<JournalEntry> createEntry(@RequestBody JournalEntry journalEntry,@PathVariable String userName) {
 
         try {
-            journalEntry.setDateTime(LocalDateTime.now());
-            journalEntryService.saveJournal(journalEntry);
+            journalEntryService.saveJournal(journalEntry,userName);
             return new ResponseEntity<>(journalEntry, HttpStatus.CREATED);
         }catch (Exception e){
             return new ResponseEntity<>(journalEntry, HttpStatus.BAD_REQUEST);
