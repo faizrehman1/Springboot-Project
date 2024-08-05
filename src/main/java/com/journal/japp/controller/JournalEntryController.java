@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -58,22 +57,24 @@ public class JournalEntryController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("id/{myId}")
-    public void deleteJournalEntrybyId(@PathVariable ObjectId myId){
-         journalEntryService.deletebyId(myId);
+    @DeleteMapping("id/{userName}/{myId}")
+    public ResponseEntity<?> deleteJournalEntrybyId(@PathVariable ObjectId myId, @PathVariable String userName){
+         journalEntryService.deletebyId(myId,userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PutMapping("id/{myId}")
-    public JournalEntry updateJournalEntrybyId(@PathVariable ObjectId myId,@RequestBody JournalEntry journalEntry){
+    @PutMapping("id/{userName}/{myId}")
+    public ResponseEntity<?> updateJournalEntrybyId(@PathVariable ObjectId myId, @RequestBody JournalEntry journalEntry, @PathVariable String userName){
 
         JournalEntry old = journalEntryService.getbyId(myId).orElse(null);
 
         if(old !=null){
             old.setName(journalEntry.getName() !=null && !journalEntry.getName().equals("") ? journalEntry.getName() : old.getName());
             old.setDescription(journalEntry.getDescription() !=null && !journalEntry.getDescription().equals("") ? journalEntry.getDescription() : old.getDescription());
+            journalEntryService.updatebyId(old);
+            return new ResponseEntity<>(old,HttpStatus.OK);
         }
-        journalEntryService.updatebyId(old);
-        return old;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 
