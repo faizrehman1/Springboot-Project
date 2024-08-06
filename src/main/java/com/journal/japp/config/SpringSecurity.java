@@ -33,7 +33,7 @@ public class SpringSecurity {
 
         return http.authorizeHttpRequests(request -> request
                  //       .requestMatchers("/public/**").permitAll()
-                        .requestMatchers("/journal/**").authenticated() //"/user/**"
+                        .requestMatchers("/journal/**","/users/**").authenticated() //"/user/**"
                 //        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().permitAll())
                 .httpBasic(Customizer.withDefaults())
@@ -52,7 +52,7 @@ public class SpringSecurity {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-        auth.userDetailsService(userDetailService);
+        auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
         return auth.build();
     }
 

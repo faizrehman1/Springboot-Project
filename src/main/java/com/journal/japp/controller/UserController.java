@@ -6,6 +6,8 @@ import com.journal.japp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,13 +35,14 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<Object> udpateUserByid(@RequestBody User user){
-
-      User user1 =  userService.findbyUserName(user.getUserName());
+      Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
+      String userName = authentication.getName();
+      User user1 =  userService.findbyUserName(userName);
 
       if(user1!=null){
           user1.setUserName(user.getUserName());
           user1.setPassword(user.getPassword());
-          userService.saveUser(user1);
+          userService.saveNewUser(user1);
       }
         return new ResponseEntity<Object>(HttpStatus.OK);
     }
