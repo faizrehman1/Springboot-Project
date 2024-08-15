@@ -5,6 +5,11 @@ import com.journal.japp.entity.User;
 import com.journal.japp.repository.UsersRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -19,6 +24,7 @@ public class UserService {
 
     @Autowired
     private UsersRepository usersRepository;
+
 
     private static final PasswordEncoder password = new BCryptPasswordEncoder();
 
@@ -46,6 +52,7 @@ public class UserService {
     public User findbyUserName(String userName){
       return  usersRepository.findByUserName(userName);
     }
+
 
 
 

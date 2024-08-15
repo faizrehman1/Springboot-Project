@@ -2,7 +2,11 @@ package com.journal.japp.controller;
 
 
 import com.journal.japp.entity.User;
+import com.journal.japp.entity.WeatherResponse;
 import com.journal.japp.service.UserService;
+import com.journal.japp.service.WeatherAPIService;
+import org.bson.json.JsonObject;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +24,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private WeatherAPIService weatherAPIService;
 
     @GetMapping
     public List<User> getAll(){
@@ -47,5 +53,17 @@ public class UserController {
         return new ResponseEntity<Object>(HttpStatus.OK);
     }
 
+
+    @PostMapping("greetings")
+    public ResponseEntity<?> greeting(@RequestBody String city) {
+        JSONObject inputJS = new JSONObject(city);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        WeatherResponse weatherResponse = weatherAPIService.getWeather(inputJS.optString("city","Karachi"));
+        String greeting = "";
+        if (weatherResponse != null) {
+            greeting = ", Weather feels like " +  weatherResponse.getCurrent().getFeelslike();
+        }
+        return new ResponseEntity<>("Hi " + authentication.getName() + greeting, HttpStatus.OK);
+    }
 
 }
