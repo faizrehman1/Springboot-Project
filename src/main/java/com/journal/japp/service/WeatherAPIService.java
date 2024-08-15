@@ -3,6 +3,7 @@ package com.journal.japp.service;
 import com.journal.japp.entity.User;
 import com.journal.japp.entity.WeatherResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,7 +15,9 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class WeatherAPIService {
 
-    public static String API_KEY = "54d9cd960b396817e2c611db37a8913a";
+
+    @Value("${weather.api.key}")
+    public String API_KEY;
 
     public static String URL = "http://api.weatherstack.com/current?access_key=API_KEY&query=city";
 

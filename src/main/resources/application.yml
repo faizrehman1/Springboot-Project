@@ -10,3 +10,7 @@ server:
   port: 8081
   servlet:
     context-path: /journal
+
+weather:
+  api:
+    key: 54d9cd960b396817e2c611db37a8913a
