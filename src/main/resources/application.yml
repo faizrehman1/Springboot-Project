@@ -1,5 +1,8 @@
 spring:
   data:
+    redis:
+      host: localhost
+      port: 6379
     mongodb:
       uri: mongodb+srv://k214188:yW1aPpEEwZLaTWBl@cluster0.oypiloh.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       database: journaldb
@@ -14,3 +17,4 @@ server:
 weather:
   api:
     key: 54d9cd960b396817e2c611db37a8913a
+    url: http://api.weatherstack.com/current?access_key=API_KEY&query=city
