@@ -3,6 +3,7 @@ package com.journal.japp.service;
 
 import com.journal.japp.entity.User;
 import com.journal.japp.repository.UsersRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -25,6 +26,8 @@ public class UserService {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private TokenBlacklistService tokenBlacklistService;
 
     private static final PasswordEncoder password = new BCryptPasswordEncoder();
 
@@ -53,7 +56,11 @@ public class UserService {
       return  usersRepository.findByUserName(userName);
     }
 
-
+    public String logout(HttpServletRequest request) {
+        tokenBlacklistService.addToBlacklist(request);
+        // Clear any session-related data if necessary
+        return "Logged out successfully";
+    }
 
 
 }

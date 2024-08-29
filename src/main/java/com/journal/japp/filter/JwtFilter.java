@@ -1,6 +1,7 @@
 package com.journal.japp.filter;
 
 
+import com.journal.japp.service.TokenBlacklistService;
 import com.journal.japp.service.UserService;
 import com.journal.japp.util.JwtUtil;
 import jakarta.servlet.FilterChain;
@@ -27,6 +28,9 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    TokenBlacklistService blacklistService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -39,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         if (username != null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            if (jwtUtil.validateToken(jwt)) {
+            if (jwtUtil.validateToken(jwt) && !blacklistService.isBlacklisted(jwt)) {
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(auth);

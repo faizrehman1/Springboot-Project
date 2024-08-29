@@ -5,6 +5,7 @@ import com.journal.japp.entity.User;
 import com.journal.japp.service.UserDetailServiceImpl;
 import com.journal.japp.service.UserService;
 import com.journal.japp.util.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,5 +53,11 @@ public class PublicController {
             log.error("Exception occurred while createAuthenticationToken ", e);
             return new ResponseEntity<>("Incorrect username or password", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        // Clear any session-related data if necessary
+        return ResponseEntity.ok(userService.logout(request));
     }
 }

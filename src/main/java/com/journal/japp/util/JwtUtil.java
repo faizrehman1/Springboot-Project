@@ -4,7 +4,9 @@ package com.journal.japp.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -60,6 +62,20 @@ public class JwtUtil {
 
     public Boolean validateToken(String token) {
         return !isTokenExpired(token);
+    }
+
+    public String extractTokenFromRequest(HttpServletRequest request) {
+        // Get the Authorization header from the request
+        String authorizationHeader = request.getHeader("Authorization");
+
+        // Check if the Authorization header is not null and starts with "Bearer "
+        if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
+            // Extract the JWT token (remove "Bearer " prefix)
+            return authorizationHeader.substring(7);
+        }
+
+        // If the Authorization header is not valid, return null
+        return null;
     }
 
 }
