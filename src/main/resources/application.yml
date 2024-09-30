@@ -18,3 +18,7 @@ weather:
   api:
     key: 54d9cd960b396817e2c611db37a8913a
     url: http://api.weatherstack.com/current?access_key=API_KEY&query=city
+
+#springdoc:
+#  swagger-ui:
+#    path: /docs

@@ -5,6 +5,7 @@ import com.journal.japp.entity.User;
 import com.journal.japp.service.UserDetailServiceImpl;
 import com.journal.japp.service.UserService;
 import com.journal.japp.util.JwtUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/public")
 @Slf4j
+@Tag(name = "Public API",description = "Public related API's")
 public class PublicController {
 
 

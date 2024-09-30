@@ -5,6 +5,7 @@ import com.journal.japp.entity.User;
 import com.journal.japp.entity.WeatherResponse;
 import com.journal.japp.service.UserService;
 import com.journal.japp.service.WeatherAPIService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.bson.json.JsonObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "User API",description = "User related API's")
 public class UserController {
 
 

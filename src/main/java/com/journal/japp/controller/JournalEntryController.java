@@ -5,6 +5,7 @@ import com.journal.japp.entity.JournalEntry;
 import com.journal.japp.entity.User;
 import com.journal.japp.service.JournalEntryService;
 import com.journal.japp.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,8 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/journal")
+@Tag(name = "Journal API",description = "Journal related API's")
+
 public class JournalEntryController {
 
 
