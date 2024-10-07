@@ -3,6 +3,7 @@ package com.journal.japp.controller;
 
 import com.journal.japp.entity.User;
 import com.journal.japp.entity.WeatherResponse;
+import com.journal.japp.request.UserRequest;
 import com.journal.japp.service.UserService;
 import com.journal.japp.service.WeatherAPIService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,13 +37,13 @@ public class UserController {
 
 
     @PostMapping
-    public void createUser(@RequestBody User user){
+    public void createUser(@RequestBody UserRequest user){
         userService.saveNewUser(user);
     }
 
 
     @PutMapping
-    public ResponseEntity<Object> udpateUserByid(@RequestBody User user){
+    public ResponseEntity<Object> udpateUserByid(@RequestBody UserRequest user){
       Authentication authentication =  SecurityContextHolder.getContext().getAuthentication();
       String userName = authentication.getName();
       User user1 =  userService.findbyUserName(userName);
@@ -50,7 +51,7 @@ public class UserController {
       if(user1!=null){
           user1.setUserName(user.getUserName());
           user1.setPassword(user.getPassword());
-          userService.saveNewUser(user1);
+       //   userService.saveNewUser(user1);
       }
         return new ResponseEntity<Object>(HttpStatus.OK);
     }

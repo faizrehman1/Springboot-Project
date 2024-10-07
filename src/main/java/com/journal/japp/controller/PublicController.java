@@ -2,6 +2,7 @@ package com.journal.japp.controller;
 
 
 import com.journal.japp.entity.User;
+import com.journal.japp.request.UserRequest;
 import com.journal.japp.service.UserDetailServiceImpl;
 import com.journal.japp.service.UserService;
 import com.journal.japp.util.JwtUtil;
@@ -39,12 +40,12 @@ public class PublicController {
     }
 
     @PostMapping("/signup")
-    public void signup(@RequestBody User user) {
+    public void signup(@RequestBody UserRequest user) {
         userService.saveNewUser(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<String> login(@RequestBody UserRequest user) {
         try{
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword()));

@@ -3,6 +3,7 @@ package com.journal.japp.service;
 
 import com.journal.japp.entity.User;
 import com.journal.japp.repository.UsersRepository;
+import com.journal.japp.request.UserRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,12 @@ public class UserService {
         usersRepository.save(user);
     }
 
-    public boolean saveNewUser(User user){
+    public boolean saveNewUser(UserRequest user){
         boolean isAdded;
         try{
-            user.setPassword(password.encode(user.getPassword()));
-            user.setRoles(Arrays.asList("USER"));
-            usersRepository.save(user);
+            User userNew = User.builder().userName(user.getUserName()).password(password.encode(user.getPassword())).build();
+            userNew.setRoles(Arrays.asList("USER"));
+            usersRepository.save(userNew);
             isAdded = true;
         }catch (Exception e){
             isAdded = false;
