@@ -4,10 +4,10 @@ package com.journal.japp.controller;
 import com.journal.japp.entity.User;
 import com.journal.japp.entity.WeatherResponse;
 import com.journal.japp.request.UserRequest;
+import com.journal.japp.response.GetUsersResponse;
 import com.journal.japp.service.UserService;
 import com.journal.japp.service.WeatherAPIService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.bson.json.JsonObject;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -30,13 +32,17 @@ public class UserController {
     @Autowired
     private WeatherAPIService weatherAPIService;
 
-    @GetMapping
-    public List<User> getAll(){
-       return userService.getAll();
+    @GetMapping("/getUsers")
+    public Map<String, List<GetUsersResponse>> getAll(){
+
+        Map<String, List<GetUsersResponse>> response = new HashMap<>();
+        response.put("users", userService.getAll());
+
+        return response;
     }
 
 
-    @PostMapping
+    @PostMapping("/createUser")
     public void createUser(@RequestBody UserRequest user){
         userService.saveNewUser(user);
     }

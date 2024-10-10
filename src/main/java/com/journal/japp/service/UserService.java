@@ -4,14 +4,9 @@ package com.journal.japp.service;
 import com.journal.japp.entity.User;
 import com.journal.japp.repository.UsersRepository;
 import com.journal.japp.request.UserRequest;
+import com.journal.japp.response.GetUsersResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -19,7 +14,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class UserService {
@@ -49,8 +43,13 @@ public class UserService {
      return isAdded;
     }
 
-    public List<User> getAll(){
-        return usersRepository.findAll();
+    public List<GetUsersResponse> getAll(){
+        List<User> userList = usersRepository.findAll();
+        List<GetUsersResponse> getUsersResponses = new ArrayList<>();
+        for (int i = 0; i < userList.size(); i++) {
+            getUsersResponses.add(GetUsersResponse.builder().userName(userList.get(i).getUserName()).roles(userList.get(i).getRoles()).build());
+        }
+        return getUsersResponses;
     }
 
     public User findbyUserName(String userName){
